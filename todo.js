@@ -3,7 +3,20 @@ const toDoInput = toDoForm.querySelector("input")
 const toDoList = document.querySelector(".js-toDoList")
 
 const TODOS_LS = 'toDos'
-const toDos = [] //할일 목록.. 할일 생성후 할일 목록으로 추가
+let toDos = [] //할일 목록.. 할일 생성후 할일 목록으로 추가
+
+
+function deleteToDo(event) {
+    const btn = event.target
+    const li = btn.parentNode
+    toDoList.removeChild(li) // list에서 없엠..
+    const cleanToDos = toDos.filter(function(toDo) {
+            return toDo.id !== parseInt(li.id)
+        }) // 삭제 선택 외 것들만남김..
+    console.log(cleanToDos)
+    toDos = cleanToDos
+    saveToDos()
+}
 
 function saveToDos() {
     localStorage.setItem(TODOS_LS, JSON.stringify(toDos))
@@ -17,6 +30,7 @@ function paintToDo(text) {
     const newId = toDos.length + 1
 
     delBtn.innerHTML = "❌"
+    delBtn.addEventListener("click", deleteToDo)
 
     span.innerText = text
     li.appendChild(delBtn)
